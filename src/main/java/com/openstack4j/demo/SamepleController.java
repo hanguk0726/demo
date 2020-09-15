@@ -34,15 +34,19 @@ public class SamepleController {
     String message = "TEST";
     ModelAndView mv = new ModelAndView();
     mv.addObject("message", message);
+    mv.addObject("list_image", sampleService.list_image(
+        identityService.getToken()));
     mv.setViewName("index");
     return mv;
   }
 
-  @PostMapping("/file")
+  @PostMapping("/upload_image")
   public RedirectView postFile(@RequestParam MultipartFile file,
+      @RequestParam String image_name,
       RedirectAttributes redirectAttributes) throws IOException {
     OSClient.OSClientV3 token = identityService.getToken();
     sampleService.upload_image(file, token);
+    System.out.printf("Printing image_name %s", image_name);
 
     return new RedirectView("/");
   }

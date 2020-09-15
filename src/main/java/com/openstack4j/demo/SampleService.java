@@ -26,13 +26,20 @@ import java.util.List;
 public class SampleService {
 
     @Transactional
+    public List<? extends Image> list_image(OSClient.OSClientV3 token){
+        /*List<? extends Image> list = token.imagesV2().list();
+        for (Image image: list
+        ) {
+            image.getName
+
+        }*/
+        return token.imagesV2().list();
+
+    }
+
+    @Transactional
     public void upload_image(MultipartFile mfile, OSClient.OSClientV3 token) throws IOException {
-        List<? extends Image> images = token.imagesV2().list();
-        System.out.println("--------------------------------------------");
-        for (Image image : images) {
-            System.out.println(image.getId());
-        }
-        System.out.println("--------------------------------------------");
+
 
         Image image1 = token.imagesV2().create(
                 Builders.imageV2()

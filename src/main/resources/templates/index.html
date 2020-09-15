@@ -11,10 +11,16 @@
         <div th:if="${message}">
             <h3 th:text="${message}"/>
         </div>
-        <form action="#" method="POST" enctype="multipart/form-data" th:action="@{/file}">
+        <form action="#" method="POST" enctype="multipart/form-data" th:action="@{/upload_image}">
+            <input type="text" name="image_name"></br>
             <input type="file" name="file"> </br>
             <input type="submit" value="업로드">
         </form>
+        <div th:each="image : ${list_image}">
+            <div><span th:text="${image.name}"></span></div>
+            <div><span th:text="${image.getName()}"></span></div>
+            <!--<div th:text="diskFormat is"><span th:text="${image.diskFormat}"></span></div>-->
+        </div>
     </body>
 
 
