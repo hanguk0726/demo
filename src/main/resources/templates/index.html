@@ -11,15 +11,26 @@
         <div th:if="${message}">
             <h3 th:text="${message}"/>
         </div>
-        <form action="#" method="POST" enctype="multipart/form-data" th:action="@{/upload_image}">
-            <input type="text" name="image_name"></br>
-            <input type="file" name="file"> </br>
-            <input type="submit" value="업로드">
+        <form action="#" method="POST" enctype="multipart/form-data" th:action="@{/createImage}">
+            <input type="text" name="imageName" placeholder="이미지 이름"></br>
+            <input type="text" name="imageDesc" placeholder="이미지 설명"></br>
+            <input type="file" name="imageFile"> </br>
+            <input list="imageDiskFormatList" name="imageDiskFormat">
+            <datalist id="imageDiskFormatList" autocomplete="off">
+                <option label="ISO - 광학 디스크 이미지 (Optical Disk Image)" value="ISO">
+                <option label="QCOW2 - QEMU 에뮬레이터 (Emulator)" value="QCOW2">
+                <option label="VDI - 가상 디스크 이미지 (Virtual Disk Image)" value="VDI">
+                <option label="VHD - 가상 하드 디스크 (Virtual Hard Disk)" value="VHD">
+                <option label="VMDK - 가상 머신 디스크 (Virtual Machine Disk)" value="VMDK">
+                <option label="AKI - Amazon 커널 이미지 (Kernel Image)" value="AKI">
+                <option label="AMI - Amazon 머신 이미지 (Machine Image)" value="AMI">
+                <option label="ARI - Amazon 램디스크 이미지 (Ramdisk Image)" value="ARI">
+            </datalist>
+            <input type="submit" value="생성">
         </form>
-        <div th:each="image : ${list_image}">
-            <div><span th:text="${image.name}"></span></div>
-            <div><span th:text="${image.getName()}"></span></div>
-            <!--<div th:text="diskFormat is"><span th:text="${image.diskFormat}"></span></div>-->
+        <div th:each="image : ${listImage}">
+
+            <div><a href="/updateImage/image.id"><span th:text="${image.name}"></span></a></div>
         </div>
     </body>
 

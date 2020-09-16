@@ -1,7 +1,8 @@
-package com.openstack4j.demo;
+package com.openstack4j.demo.keystone;
 
 import org.openstack4j.api.OSClient;
 import org.openstack4j.model.common.Identifier;
+import org.openstack4j.model.identity.v3.Token;
 import org.openstack4j.openstack.OSFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +20,7 @@ public class IdentityService {
   Environment env;
 
   @Transactional
-  public OSClient.OSClientV3 getToken() {
+  public Token getToken() {
 
     return OSFactory.builderV3()
         .endpoint(env.getProperty("AUTH_ENDPOINT"))
@@ -27,6 +28,6 @@ public class IdentityService {
             Identifier.byName(env.getProperty("DOMAIN_NAME")))
         .scopeToProject(Identifier.byName("admin"),
             Identifier.byName(env.getProperty("DOMAIN_NAME")))
-        .authenticate();
+        .authenticate().getToken();
   }
 }

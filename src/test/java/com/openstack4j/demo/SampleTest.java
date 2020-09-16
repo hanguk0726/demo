@@ -1,5 +1,7 @@
 package com.openstack4j.demo;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.openstack4j.api.Builders;
 import org.openstack4j.api.OSClient;
@@ -23,9 +25,13 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+@SpringBootTest
 class SampleTest {
 
   //    Identifier domainIdentifier = Identifier.byName("Default");
@@ -47,6 +53,30 @@ class SampleTest {
 
   }
 
+  @Test
+  @PostMapping("/send_token")
+  String 잭슨() throws JsonProcessingException {
+    Identifier domainIdentifier = Identifier.byName("Default");
+
+    OSClient.OSClientV3 os = OSFactory.builderV3()
+        .endpoint("http://192.168.136.250:5000/v3")
+        .credentials("admin", "openstack", domainIdentifier)
+        .scopeToProject(Identifier.byName("admin"), Identifier.byName("Default"))
+        .authenticate();
+
+    Token token = os.getToken();
+
+    OSClient.OSClientV3 osToken =
+        OSFactory.clientFromToken(token);
+
+    ObjectMapper mapper = new ObjectMapper();
+    String jsonData = mapper.writeValueAsString(token);
+    System.out.println("-----------------------------");
+    System.out.printf("jsonData is %s", jsonData);
+    System.out.println("-----------------------------");
+    return jsonData;
+
+  }
 
   @Test
   void 네트워크_만들기() {
@@ -95,8 +125,6 @@ class SampleTest {
         .authenticate();
 
     Token token = os.getToken();
-    String tokenId = token.getId();
-    Token token = OSFactory.builderV3().
 
     OSClient.OSClientV3 osToken =
         OSFactory.clientFromToken(token);

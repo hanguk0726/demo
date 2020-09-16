@@ -31,6 +31,9 @@ dependencies {
     compile group: 'com.github.openstack4j.core', name: 'openstack4j-core', version: '3.3'
     compile group: 'com.github.openstack4j.core.connectors', name: 'openstack4j-resteasy', version: '3.3'
     implementation 'org.pacesys:openstack4j:3.2.0'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.2'
+    compile 'io.jsonwebtoken:jjwt-api:0.11.2'
+    runtime 'io.jsonwebtoken:jjwt-impl:0.11.2','io.jsonwebtoken:jjwt-jackson:0.11.2'
 }
 
 test {
