@@ -12,14 +12,15 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/v2/images")
 public class ImageController {
 
 
   private final ImageService imageService;
   private final IdentityService identityService;
 
-  @GetMapping("/")
-  public ModelAndView goToIndex(ModelAndView mv) {
+  @GetMapping
+  public ModelAndView indexImage(ModelAndView mv) {
     String message = "TEST";
     mv.addObject("message", message);
     mv.addObject("listImage", imageService.listImage(
@@ -28,24 +29,36 @@ public class ImageController {
     return mv;
   }
 
-  @PostMapping("/createImage")
+  @PostMapping("/createImageRequest")
   public RedirectView createImage(@ModelAttribute("dto") ImageCreateRequestDto dto,
       RedirectAttributes redirectAttributes) throws IOException {
-    System.out.printf("dto = %s", dto);
-    imageService.createImage(dto, identityService.getToken());
-    return new RedirectView("/");
+    imageService.createImage(identityService.getToken(), dto);
+    return new RedirectView("/v2/images");
   }
 
   @GetMapping("/updateImage/{imageId}")
-  public ModelAndView updateImage(ModelAndView mv) {
+  public ModelAndView goToUpdateImage(@PathVariable String imageId, ModelAndView mv) {
     String message = "UPDATE";
     mv.addObject("message", message);
-    mv.addObject("imageInstance", imageService.listImage(
-        identityService.getToken()));
+    mv.addObject("image", imageService.getImage(
+        identityService.getToken(), imageId));
+    mv.addObject("imageId",imageId);
     mv.setViewName("updateImage");
+
     return mv;
   }
 
+  @PostMapping("/updateImageRequest")
+  public RedirectView updateImage(@RequestParam String name, @RequestParam String imageId) {
+    imageService.updateImage(identityService.getToken(), name, imageId);
+    return new RedirectView("/v2/images");
+  }
+
+  @PostMapping("/deleteImageRequest")
+  public RedirectView deleteImage(@RequestParam String imageId) {
+    imageService.deleteImage(identityService.getToken(), imageId);
+    return new RedirectView("/v2/images");
+  }
 
 
 }

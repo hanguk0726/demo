@@ -5,22 +5,19 @@ import org.springframework.web.multipart.MultipartFile;
 
 @NoArgsConstructor
 @RequiredArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @ToString
 public class ImageCreateRequestDto {
 
   @NonNull
-  private String imageName;
-
-  private String imageDesc;
+  private String name;
 
   @NonNull
-  private String imageDiskFormat;
+  private String diskFormat;
 
   @NonNull
-  private MultipartFile imageFile;
+  private MultipartFile file;
 
 
 
